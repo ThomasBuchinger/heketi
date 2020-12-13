@@ -1,0 +1,23 @@
+BUILDDIR=tmp/rpmbuild
+RESDIR=rpms
+
+dist:
+	mkdir dist
+rpmbuild_root: dist
+	echo Prepare rpmbuild tooling
+	which rpmbuild
+	mkdir -p ${BUILDDIR}/{SOURCES,SPECS,BUILDROOT,BUILD}
+	cp ${RESDIR}/*.spec ${BUILDDIR}/SPECS/ 
+	cp ${RESDIR}/* ${BUILDDIR}/SOURCES/
+	cp dist/*.tar.gz ${BUILDDIR}/SOURCES	
+
+check_release_archive: dist
+	echo OK
+
+rpms: clean check_release_archive rpmbuild_root
+	echo Building RPMs
+
+clean:
+	rm -rf ${BULDDIR}
+
+.default: rpms
